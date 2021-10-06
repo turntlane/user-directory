@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import data from "./data";
-import Edit from "./edit";
 
 class Add extends Component {
   constructor(props) {

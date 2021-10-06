@@ -66,11 +66,36 @@ class Info extends React.Component {
     });
   };
 
-  handleEdit = (e) => {
-    let firstName = this.state.name;
-    firstName.first = e;
-    this.setState({ firstName: firstName });
-    console.log(this.state);
+  handleFirstNameChange = (e) => {
+    this.setState({
+      name: {
+        first: e,
+      },
+    });
+  };
+
+  handleLastNameChange = (e) => {
+    this.setState({
+      name: {
+        last: e,
+      },
+    });
+  };
+
+  handleCityChange = (e) => {
+    this.setState({ city: e });
+  };
+
+  handleCountryChange = (e) => {
+    this.setState({ country: e });
+  };
+
+  handleEmployerChange = (e) => {
+    this.setState({ employer: e });
+  };
+
+  handleTitleChange = (e) => {
+    this.setState({ title: e });
   };
 
   submitEdit = () => {
@@ -81,7 +106,11 @@ class Info extends React.Component {
         first: this.state.name.first,
         last: this.state.name.last,
       },
-      city: this.state.city
+      city: this.state.city,
+      country: this.state.country,
+      employer: this.state.employer,
+      title: this.state.title,
+      favoriteMovies: this.state.favoriteMovies,
     });
     this.setState({
       isActive: false,
@@ -97,37 +126,121 @@ class Info extends React.Component {
       <div className="outter-container">
         <button onClick={this.handleActive}>edit</button>
 
-        {!this.state.isActive ? (
-          <h1 className="name">
-            {data[this.state.activeIndex].name.first}{" "}
-            {data[this.state.activeIndex].name.last}
-          </h1>
-        ) : (
-          <textarea
-            className="name"
-            onChange={(e) => this.handleEdit(e.target.value)}
-            placeholder={`${data[this.state.activeIndex].name.first} ${
-              data[this.state.activeIndex].name.last
-            }`}
-          />
-        )}
+        <div className="info-container">
+          {!this.state.isActive ? (
+            <h1 className="hard-name">
+              {data[this.state.activeIndex].name.first}{" "}
+              {data[this.state.activeIndex].name.last}
+            </h1>
+          ) : (
+            <div>
+              <input
+                className="hard-name"
+                onChange={(e) => this.handleFirstNameChange(e.target.value)}
+                placeholder={`${data[this.state.activeIndex].name.first} ${
+                  data[this.state.activeIndex].name.last
+                }`}
+              />
+            </div>
+          )}
 
-        {!this.state.isActive ? (
+          {!this.state.isActive ? (
             <h3 className="headers">
-            From: {data[this.state.activeIndex].city},{" "}
-            {data[this.state.activeIndex].country}
-          </h3>
-        ) : (
-          <textarea
-            className="name"
-            onChange={(e) => this.handleEdit(e.target.value)}
-            placeholder={`${data[this.state.activeIndex].city} ${
-              data[this.state.activeIndex].country
-            }`}
-          />
-        )}
+              From: {data[this.state.activeIndex].city},{" "}
+              {data[this.state.activeIndex].country}
+            </h3>
+          ) : (
+            <div>
+              <input
+                onChange={(e) => this.handleCityChange(e.target.value)}
+                placeholder={`${data[this.state.activeIndex].city} ${
+                  data[this.state.activeIndex].country
+                }`}
+              />
+              <input
+                onChange={(e) => this.handleCountryChange(e.target.value)}
+                placeholder={`${data[this.state.activeIndex].country}`}
+              />
+            </div>
+          )}
 
-        <button onClick={this.submitEdit}>submit</button>
+          {!this.state.isActive ? (
+            <h3 className="headers">
+              Job Title: {data[this.state.activeIndex].title}
+            </h3>
+          ) : (
+            <input
+              onChange={(e) => this.handleTitleChange(e.target.value)}
+              placeholder={`${data[this.state.activeIndex].title}`}
+            />
+          )}
+
+          {!this.state.isActive ? (
+            <h3 className="headers">
+              Employer: {data[this.state.activeIndex].employer}
+            </h3>
+          ) : (
+            <input
+              onChange={(e) => this.handleEmployerChange(e.target.value)}
+              placeholder={`${data[this.state.activeIndex].employer}`}
+            />
+          )}
+
+          {!this.state.isActive ? (
+            <div>
+              <h3 className="headers">Favorite Movies: </h3>
+
+              <ol className="movies">
+                <li>{data[this.state.activeIndex].favoriteMovies[0]}</li>
+                <li>{data[this.state.activeIndex].favoriteMovies[1]}</li>
+                <li>{data[this.state.activeIndex].favoriteMovies[2]}</li>
+              </ol>
+            </div>
+          ) : (
+            <div>
+              <input
+                placeholder="favorite movies"
+                onChange={(e) =>
+                  this.setState({
+                    favoriteMovies: [
+                      e.target.value,
+                      this.state.favoriteMovies[1],
+                      this.state.favoriteMovies[2],
+                    ],
+                  })
+                }
+              />
+              <input
+                placeholder="favorite movies"
+                onChange={(e) =>
+                  this.setState({
+                    favoriteMovies: [
+                      this.state.favoriteMovies[0],
+                      e.target.value,
+                      this.state.favoriteMovies[2],
+                    ],
+                  })
+                }
+              />
+              <input
+                placeholder="favorite movies"
+                onChange={(e) =>
+                  this.setState({
+                    favoriteMovies: [
+                      this.state.favoriteMovies[0],
+                      this.state.favoriteMovies[1],
+                      e.target.value,
+                    ],
+                  })
+                }
+              />
+            </div>
+          )}
+        </div>
+
+        {this.isActive ? null : (
+          <button onClick={this.submitEdit}>final</button>
+        )}
 
         <button className="previous-btn" onClick={this.previousTick}>
           {larrow} Previous
@@ -141,34 +254,6 @@ class Info extends React.Component {
           <p className="numbers">
             {activeIndex + 1}/{data.length}
           </p>
-          {/* 
-          <h1 className="name">
-            {data[this.state.activeIndex].name.first}{" "}
-            {data[this.state.activeIndex].name.last}
-          </h1> */}
-          <div className="info-container">
-            {/* <h3 className="headers">
-              From: {data[this.state.activeIndex].city},{" "}
-              {data[this.state.activeIndex].country}
-            </h3> */}
-
-            <h3 className="headers">
-              Job Title: {data[this.state.activeIndex].title}
-            </h3>
-            <h3 className="headers">
-              Employer: {data[this.state.activeIndex].employer}
-            </h3>
-            <h3 className="headers">Favorite Movies: </h3>
-            <p className="movies">
-              1. {data[this.state.activeIndex].favoriteMovies}
-            </p>
-            <p className="movies">
-              2. {data[this.state.activeIndex].favoriteMovies}
-            </p>
-            <p className="movies">
-              3. {data[this.state.activeIndex].favoriteMovies}
-            </p>
-          </div>
         </div>
 
         <button className="forward-btn" onClick={this.tick}>

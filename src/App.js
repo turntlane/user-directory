@@ -4,7 +4,7 @@ import Add from './add';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <div className='header'>
         Home
 
